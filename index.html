@@ -80,8 +80,7 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
 .shead .ctx{font-weight:200;font-size:16px;opacity:.85;margin:0 0 6px;}
 .shead h2{font-weight:600;font-size:36px;line-height:1.1;margin:0;letter-spacing:-.02em;}
 
-/* single column everywhere */
-.stack{display:flex;flex-direction:column;gap:18px;max-width:var(--col);}
+.stack{display:flex;flex-direction:column;gap:16px;max-width:var(--col);}
 .block{margin-bottom:36px;max-width:var(--col);}
 .block:last-child{margin-bottom:0;}
 .block h3{font-weight:500;font-size:17px;color:var(--stable);margin:0 0 14px;}
@@ -92,23 +91,40 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
 .block ul ul li{margin-bottom:7px;font-size:14px;}
 .lead{font-weight:500;color:var(--stable);}
 
-.card{background:var(--gray);border-radius:14px;padding:24px 28px;}
-.card .top{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin:0 0 12px;}
-.card .nm{font-weight:600;font-size:18px;color:var(--stable);margin:0;}
-.card .mk{font-weight:500;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--white);padding:4px 12px;border-radius:999px;white-space:nowrap;}
+/* ---------- collapsible cards ---------- */
+.fold{
+  background:var(--gray);border-radius:14px;border-left:5px solid var(--stable);
+  overflow:hidden;
+}
+.fold > summary{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:22px 26px;cursor:pointer;list-style:none;
+}
+.fold > summary::-webkit-details-marker{display:none;}
+.fold > summary:hover{background:rgba(33,36,92,.05);}
+.fold .nm{font-weight:600;font-size:18px;color:var(--stable);}
+.fold .right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.fold .mk{
+  font-weight:500;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--white);padding:4px 12px;border-radius:999px;white-space:nowrap;
+}
 .mk-move{background:var(--fresh);}
 .mk-part{background:var(--limitless);}
 .mk-att{background:var(--fireball);}
-.card ul{margin:0;padding-left:20px;}
-.card li{font-size:15px;margin-bottom:9px;}
-.card li:last-child{margin-bottom:0;}
+.fold .chev{
+  width:20px;height:20px;stroke:var(--stable);fill:none;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease;
+}
+.fold[open] .chev{transform:rotate(180deg);}
+.fold .inner{padding:0 26px 24px;}
+.fold .inner ul{margin:0;padding-left:20px;}
+.fold .inner li{font-size:15px;margin-bottom:9px;}
+.fold .inner li:last-child{margin-bottom:0;}
 
-.own{border-radius:14px;padding:26px 28px;background:var(--gray);}
-.own h3{font-weight:500;font-size:17px;color:var(--stable);margin:0 0 12px;}
-.own ul{margin:0;padding-left:20px;}
-.own li{font-size:15px;margin-bottom:9px;}
-.own li:last-child{margin-bottom:0;}
+.b-move{border-left-color:var(--fresh);}
+.b-part{border-left-color:var(--limitless);}
+.b-att{border-left-color:var(--fireball);}
+.b-own{border-left-color:var(--fresh);}
 
 @media (max-width:1040px){ .tiles{grid-template-columns:repeat(2,1fr);} }
 @media (max-width:860px){
@@ -123,10 +139,12 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
   .tile .ttl{font-size:28px;}
   .shead{padding:28px 26px;}
   .shead h2{font-size:27px;}
+  .fold > summary{padding:18px 20px;flex-wrap:wrap;}
+  .fold .inner{padding:0 20px 20px;}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
-  .tile{transition:none;}
+  .tile,.fold .chev{transition:none;}
   .tile:hover{transform:none;}
 }
 </style>
@@ -147,26 +165,29 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
    grad   = g1 | g2 | g3 | g4 | g5
    icon   = key from ICONS below
    Content keys (use any): status[] | blocks[] | own[]
+
+   Collapsible cards (status[] and own[]) take:
+     open: true   -> starts expanded      (omit to start collapsed)
    Wrap emphasis in <strong> — renders as Poppins SemiBold, brand navy.
    ===================================================================== */
 const SECTIONS = [
   {
     id:'standing', title:'Where We Stand', grad:'g1', icon:'gauge',
     status:[
-      {nm:'Strategy', mk:'Moving', cls:'mk-move', ul:[
+      {nm:'Strategy', mk:'Moving', cls:'move', ul:[
         'Priorities are clearer than they have been: <strong>strengthen current customers</strong>, <strong>cultivate new accounts</strong>, <strong>sharpen qualifying and closing</strong>.',
         'One thing to settle: the company revenue target has been <strong>stated two different ways</strong>. The sales plan needs <strong>one number</strong> to build from.'
       ]},
-      {nm:'Staff', mk:'Needs attention', cls:'mk-att', ul:[
+      {nm:'Staff', mk:'Needs attention', cls:'att', ul:[
         '<strong>One seller</strong> is performing <strong>well above baseline</strong> and carrying the year.',
         '<strong>Two are below baseline</strong> for different reasons, and <strong>neither reason has been acted on</strong>.',
         'The added sales hire has been <strong>on hold since the start of the year</strong>, with <strong>no defined trigger</strong> to release it.'
       ]},
-      {nm:'Skills', mk:'Partly landing', cls:'mk-part', ul:[
+      {nm:'Skills', mk:'Partly landing', cls:'part', ul:[
         '<strong>Qualification is showing up</strong> in real conversations. Pain, budget and decision questions are being asked.',
         '<strong>Closing is not landing.</strong> It is the <strong>same gap</strong> it was at the start of this window.'
       ]},
-      {nm:'Structure', mk:'Needs attention', cls:'mk-att', ul:[
+      {nm:'Structure', mk:'Needs attention', cls:'att', ul:[
         'The pipeline, the playbook, the quote criteria and the activity tracking <strong>all exist and all work</strong>.',
         '<strong>None of them has a consequence attached</strong>, so the design does not change behavior.'
       ]}
@@ -260,14 +281,14 @@ const SECTIONS = [
   {
     id:'commitments', title:'Who Owns What', grad:'g5', icon:'hands',
     own:[
-      {h:'Bulwark owns', ul:[
+      {nm:'Bulwark owns', open:true, ul:[
         'Put a <strong>date</strong> on the two open roster decisions.',
         'Define the <strong>revenue trigger</strong> that releases the added sales hire.',
         'Send <strong>three recorded closing conversations</strong> before the next session.',
         'Attach a <strong>consequence</strong> to missed weekly activity.',
         'Pick the <strong>one company revenue number</strong> the sales plan builds from.'
       ]},
-      {h:'Lushin owns', ul:[
+      {nm:'Lushin owns', open:true, ul:[
         'Run both closing sessions against <strong>live open deals</strong>.',
         'Review the three recordings and come back with <strong>specific coaching</strong>, not general feedback.',
         'Build the <strong>repeat-order and new-account measures</strong> off the Copper export.',
@@ -284,6 +305,8 @@ const ICONS = {
   target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
   hands:'<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 12V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12V6.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6v-2a1.5 1.5 0 0 1 3 0"/>'
 };
+
+const CHEV = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
 
 const nav = document.getElementById('nav');
 const main = document.getElementById('main');
@@ -306,6 +329,16 @@ function renderList(items){
   }).join('') + '</ul>';
 }
 
+/* one collapsible card */
+function fold(c, borderClass){
+  const pill = c.mk ? '<span class="mk mk-' + c.cls + '">' + c.mk + '</span>' : '';
+  return '<details class="fold ' + borderClass + '"' + (c.open ? ' open' : '') + '>' +
+    '<summary><span class="nm">' + c.nm + '</span>' +
+    '<span class="right">' + pill + CHEV + '</span></summary>' +
+    '<div class="inner"><ul>' + c.ul.map(x=>'<li>' + x + '</li>').join('') + '</ul></div>' +
+  '</details>';
+}
+
 function renderHome(){
   return '<p class="eyebrow">Bulwark Safety Systems</p>' +
     '<h1>Sales Progress Review</h1>' +
@@ -319,19 +352,14 @@ function renderHome(){
 function renderSection(s){
   let html = '<div class="shead ' + s.grad + '"><p class="ctx">Bulwark</p><h2>' + s.title + '</h2></div>';
   if (s.status){
-    html += '<div class="stack">' + s.status.map(c=>
-      '<div class="card"><div class="top"><p class="nm">' + c.nm + '</p>' +
-      '<span class="mk ' + c.cls + '">' + c.mk + '</span></div><ul>' +
-      c.ul.map(x=>'<li>' + x + '</li>').join('') + '</ul></div>').join('') + '</div>';
+    html += '<div class="stack">' + s.status.map(c=>fold(c,'b-' + c.cls)).join('') + '</div>';
   }
   if (s.blocks){
     html += s.blocks.map(b=>'<div class="block">' +
       (b.h ? '<h3>' + b.h + '</h3>' : '') + renderList(b.ul) + '</div>').join('');
   }
   if (s.own){
-    html += '<div class="stack">' + s.own.map(o=>
-      '<div class="own"><h3>' + o.h + '</h3><ul>' +
-      o.ul.map(x=>'<li>' + x + '</li>').join('') + '</ul></div>').join('') + '</div>';
+    html += '<div class="stack">' + s.own.map(c=>fold(c,'b-own')).join('') + '</div>';
   }
   return html;
 }
