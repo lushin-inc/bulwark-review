@@ -19,6 +19,7 @@
   --subtle:#666666;
   --font:'Poppins',Arial,sans-serif;
   --nav:260px;
+  --col:880px;
 }
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -28,6 +29,7 @@ body{
 }
 a{color:inherit;}
 :focus-visible{outline:3px solid var(--fresh);outline-offset:3px;}
+strong{font-weight:600;color:var(--stable);}
 
 /* ---------- side nav ---------- */
 .nav{
@@ -35,9 +37,7 @@ a{color:inherit;}
   background:var(--stable);padding:38px 0;overflow-y:auto;z-index:20;
 }
 .brand{padding:0 30px 30px;}
-.brand .mark{
-  font-weight:600;font-size:19px;color:var(--white);letter-spacing:-.01em;margin:0;
-}
+.brand .mark{font-weight:600;font-size:19px;color:var(--white);letter-spacing:-.01em;margin:0;}
 .brand .mark span{color:var(--fresh);}
 .nav a{
   display:block;padding:14px 30px;text-decoration:none;color:rgba(255,255,255,.72);
@@ -48,10 +48,7 @@ a{color:inherit;}
 
 /* ---------- main ---------- */
 .main{margin-left:var(--nav);padding:64px 56px 96px;max-width:1180px;}
-
-.eyebrow{
-  font-weight:400;font-size:14px;color:var(--subtle);margin:0 0 4px;
-}
+.eyebrow{font-weight:400;font-size:14px;color:var(--subtle);margin:0 0 4px;}
 h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0 44px;}
 
 /* ---------- hub tiles ---------- */
@@ -60,7 +57,7 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
   position:relative;display:flex;flex-direction:column;justify-content:space-between;
   min-height:430px;padding:34px;border-radius:20px;text-decoration:none;
   color:var(--white);border:0;text-align:left;font-family:var(--font);cursor:pointer;
-  transition:transform .18s ease, box-shadow .18s ease;
+  transition:transform .18s ease;
 }
 .tile:hover{transform:translateY(-5px);}
 .tile .ico{
@@ -70,7 +67,7 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
 .tile .ico svg{width:28px;height:28px;stroke:var(--white);fill:none;stroke-width:1.8;
   stroke-linecap:round;stroke-linejoin:round;}
 .tile .ctx{font-weight:200;font-size:15px;opacity:.85;margin:0 0 6px;}
-.tile .ttl{font-weight:600;font-size:34px;line-height:1.12;margin:0;letter-spacing:-.02em;}
+.tile .ttl{font-weight:600;font-size:32px;line-height:1.12;margin:0;letter-spacing:-.02em;}
 
 .g1{background:radial-gradient(circle at 30% 20%,#2F3480,var(--stable) 70%);box-shadow:0 18px 40px -14px rgba(33,36,92,.55);}
 .g2{background:radial-gradient(circle at 30% 20%,var(--fresh),var(--energetic) 75%);box-shadow:0 18px 40px -14px rgba(0,69,194,.5);}
@@ -79,44 +76,41 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
 .g5{background:radial-gradient(circle at 30% 20%,var(--stable),#000000 80%);box-shadow:0 18px 40px -14px rgba(0,0,0,.5);}
 
 /* ---------- section view ---------- */
-.shead{border-radius:20px;padding:40px 44px;color:var(--white);margin:0 0 44px;}
+.shead{border-radius:20px;padding:40px 44px;color:var(--white);margin:0 0 40px;max-width:var(--col);}
 .shead .ctx{font-weight:200;font-size:16px;opacity:.85;margin:0 0 6px;}
 .shead h2{font-weight:600;font-size:36px;line-height:1.1;margin:0;letter-spacing:-.02em;}
 
-.block{margin-bottom:40px;}
+/* single column everywhere */
+.stack{display:flex;flex-direction:column;gap:18px;max-width:var(--col);}
+.block{margin-bottom:36px;max-width:var(--col);}
 .block:last-child{margin-bottom:0;}
-.block h3{
-  font-weight:500;font-size:17px;color:var(--stable);margin:0 0 14px;
-}
+.block h3{font-weight:500;font-size:17px;color:var(--stable);margin:0 0 14px;}
 .block > ul{margin:0;padding-left:22px;}
-.block > ul > li{margin-bottom:12px;font-size:15px;}
+.block > ul > li{margin-bottom:14px;font-size:15px;}
 .block > ul > li:last-child{margin-bottom:0;}
-.block ul ul{margin:10px 0 0;padding-left:22px;}
-.block ul ul li{margin-bottom:7px;font-size:14px;color:var(--body);}
+.block ul ul{margin:9px 0 0;padding-left:22px;}
+.block ul ul li{margin-bottom:7px;font-size:14px;}
 .lead{font-weight:500;color:var(--stable);}
 
-.status{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
-}
-.card{background:var(--gray);border-radius:14px;padding:22px 24px;}
-.card .top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px;}
-.card .nm{font-weight:600;font-size:17px;color:var(--stable);margin:0;}
+.card{background:var(--gray);border-radius:14px;padding:24px 28px;}
+.card .top{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin:0 0 12px;}
+.card .nm{font-weight:600;font-size:18px;color:var(--stable);margin:0;}
 .card .mk{font-weight:500;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--white);padding:4px 11px;border-radius:999px;white-space:nowrap;}
+  color:var(--white);padding:4px 12px;border-radius:999px;white-space:nowrap;}
 .mk-move{background:var(--fresh);}
 .mk-part{background:var(--limitless);}
 .mk-att{background:var(--fireball);}
 .card ul{margin:0;padding-left:20px;}
-.card li{font-size:14px;margin-bottom:7px;}
+.card li{font-size:15px;margin-bottom:9px;}
 .card li:last-child{margin-bottom:0;}
 
-.split{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
 .own{border-radius:14px;padding:26px 28px;background:var(--gray);}
-.own h3{margin-top:0;}
+.own h3{font-weight:500;font-size:17px;color:var(--stable);margin:0 0 12px;}
+.own ul{margin:0;padding-left:20px;}
+.own li{font-size:15px;margin-bottom:9px;}
+.own li:last-child{margin-bottom:0;}
 
-@media (max-width:1040px){
-  .tiles{grid-template-columns:repeat(2,1fr);}
-}
+@media (max-width:1040px){ .tiles{grid-template-columns:repeat(2,1fr);} }
 @media (max-width:860px){
   :root{--nav:0px;}
   .nav{position:static;width:100%;height:auto;padding:24px 0 10px;display:block;}
@@ -129,7 +123,6 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
   .tile .ttl{font-size:28px;}
   .shead{padding:28px 26px;}
   .shead h2{font-size:27px;}
-  .status,.split{grid-template-columns:1fr;}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
@@ -149,33 +142,33 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
 <script>
 /* =====================================================================
    ADD OR EDIT A SECTION: add one entry to this array. Nothing else changes.
-   id       = hash route (#id)
-   title    = big section name (plain label, no headlines)
-   grad     = g1 | g2 | g3 | g4 | g5
-   icon     = key from ICONS below
-   blocks   = content; each block is {h: optional heading, ul: [...]}
-              a list item can be a string, or {lead:"...", ul:[...]} to nest
+   id     = hash route (#id)
+   title  = big section name
+   grad   = g1 | g2 | g3 | g4 | g5
+   icon   = key from ICONS below
+   Content keys (use any): status[] | blocks[] | own[]
+   Wrap emphasis in <strong> — renders as Poppins SemiBold, brand navy.
    ===================================================================== */
 const SECTIONS = [
   {
     id:'standing', title:'Where We Stand', grad:'g1', icon:'gauge',
     status:[
       {nm:'Strategy', mk:'Moving', cls:'mk-move', ul:[
-        'Priorities are clearer than they have been: strengthen current customers, cultivate new accounts, sharpen qualifying and closing.',
-        'One thing to settle: the company revenue target has been stated two different ways. The sales plan needs one number to build from.'
+        'Priorities are clearer than they have been: <strong>strengthen current customers</strong>, <strong>cultivate new accounts</strong>, <strong>sharpen qualifying and closing</strong>.',
+        'One thing to settle: the company revenue target has been <strong>stated two different ways</strong>. The sales plan needs <strong>one number</strong> to build from.'
       ]},
       {nm:'Staff', mk:'Needs attention', cls:'mk-att', ul:[
-        'One seller is performing well above baseline and carrying the year.',
-        'Two are below baseline for different reasons, and neither reason has been acted on.',
-        'The added sales hire has been on hold since the start of the year with no defined trigger to release it.'
+        '<strong>One seller</strong> is performing <strong>well above baseline</strong> and carrying the year.',
+        '<strong>Two are below baseline</strong> for different reasons, and <strong>neither reason has been acted on</strong>.',
+        'The added sales hire has been <strong>on hold since the start of the year</strong>, with <strong>no defined trigger</strong> to release it.'
       ]},
       {nm:'Skills', mk:'Partly landing', cls:'mk-part', ul:[
-        'Qualification is showing up in real conversations. Pain, budget and decision questions are being asked.',
-        'Closing is not landing. It is the same gap it was at the start of this window.'
+        '<strong>Qualification is showing up</strong> in real conversations. Pain, budget and decision questions are being asked.',
+        '<strong>Closing is not landing.</strong> It is the <strong>same gap</strong> it was at the start of this window.'
       ]},
       {nm:'Structure', mk:'Needs attention', cls:'mk-att', ul:[
-        'The pipeline, the playbook, the quote criteria and the activity tracking all exist and all work.',
-        'None of them currently has a consequence attached, so the design does not change behavior.'
+        'The pipeline, the playbook, the quote criteria and the activity tracking <strong>all exist and all work</strong>.',
+        '<strong>None of them has a consequence attached</strong>, so the design does not change behavior.'
       ]}
     ]
   },
@@ -184,26 +177,26 @@ const SECTIONS = [
     blocks:[
       {ul:[
         {lead:'One seller cleared baseline by a wide margin', ul:[
-          'Nearly double the monthly baseline, for the second time this year.',
-          'On pace to finish above the annual number.'
+          '<strong>Nearly double</strong> the monthly baseline, for the <strong>second time this year</strong>.',
+          'On pace to finish <strong>above the annual number</strong>.'
         ]},
         {lead:'The pipeline was rebuilt on the five milestone stages', ul:[
-          'Copper restructured within two weeks of the in-person session.',
-          'Old stages that were killing deals were removed.'
+          'Copper restructured <strong>within two weeks</strong> of the in-person session.',
+          'Old stages that were <strong>killing deals</strong> were removed.'
         ]},
         {lead:'The whole team worked a full day in person', ul:[
-          'Pipeline audit, prospecting practice, pain discovery, closing and PO practice.',
-          'Every rep left with a named gap to work on.'
+          'Pipeline audit, prospecting practice, pain discovery, <strong>closing and PO practice</strong>.',
+          'Every rep left with a <strong>named gap</strong> to work on.'
         ]},
         {lead:'Quote criteria are in active use', ul:[
-          'Printed checklists are being run before quotes go out.'
+          'Printed checklists are being run <strong>before quotes go out</strong>.'
         ]},
         {lead:'Conversations can now be reviewed instead of recalled', ul:[
-          'Meeting capture is in place for both virtual and in-person calls.',
-          'This is what makes real coaching possible.'
+          'Meeting capture is in place for <strong>both virtual and in-person</strong> calls.',
+          'This is what makes <strong>real coaching</strong> possible.'
         ]},
         {lead:'Coaching expanded past the sales manager', ul:[
-          'Direct sessions now open with the general manager and with reps individually.'
+          'Direct sessions now open with the <strong>general manager</strong> and with <strong>reps individually</strong>.'
         ]}
       ]}
     ]
@@ -213,26 +206,26 @@ const SECTIONS = [
     blocks:[
       {ul:[
         {lead:'Deals stop after the rough draft goes out', ul:[
-          'Most have no scheduled next step attached.',
-          'Momentum depends on the customer coming back on their own.'
+          'Most have <strong>no scheduled next step</strong> attached.',
+          'Momentum depends on <strong>the customer coming back on their own</strong>.'
         ]},
         {lead:'"We will reach out when we are ready" is being accepted as progress', ul:[
-          'It is not a commitment, and it is where most of the pipeline is sitting.',
-          'This is the single biggest constraint on revenue right now.'
+          'It is <strong>not a commitment</strong>, and it is <strong>where most of the pipeline is sitting</strong>.',
+          'This is the <strong>single biggest constraint on revenue</strong> right now.'
         ]},
         {lead:'Committed weekly activity has been missed three checks in a row', ul:[
-          'The tracking works. The follow-through does not.',
-          'Nothing currently changes when a commitment is missed.'
+          'The tracking works. <strong>The follow-through does not.</strong>',
+          '<strong>Nothing changes</strong> when a commitment is missed.'
         ]},
         {lead:'Live prospecting has been replaced by email and messaging', ul:[
-          'Those channels are easier, and they are not producing meetings.',
-          'Calls and walk-ins are close to zero for part of the team.'
+          'Those channels are easier, and they are <strong>not producing meetings</strong>.',
+          '<strong>Calls and walk-ins are close to zero</strong> for part of the team.'
         ]},
         {lead:'Two roster decisions have been open for months', ul:[
-          'Both are holding up territory planning and the added hire.'
+          'Both are holding up <strong>territory planning</strong> and <strong>the added hire</strong>.'
         ]},
         {lead:'Two of the three stated priorities have no scoreboard', ul:[
-          'Repeat orders and new-account growth are not currently measured.'
+          '<strong>Repeat orders</strong> and <strong>new-account growth</strong> are not currently measured.'
         ]}
       ]}
     ]
@@ -241,44 +234,44 @@ const SECTIONS = [
     id:'plan', title:'The Plan', grad:'g4', icon:'target',
     blocks:[
       {h:'The goal, narrowed to one thing', ul:[
-        'Every open deal past rough draft has a scheduled next meeting, with a named decision maker, on the calendar.',
-        'Three live closing conversations reviewed every month from recordings.'
+        'Every open deal past rough draft has a <strong>scheduled next meeting</strong>, with a <strong>named decision maker</strong>, on the calendar.',
+        '<strong>Three live closing conversations</strong> reviewed every month from recordings.'
       ]},
       {h:'How we will know it is working', ul:[
-        'The rough-draft stage stops accumulating deals.',
-        'Close rate on quoted work rises while quote volume falls.',
-        'Both numbers come straight off the Copper export. No new reporting to build.'
+        'The rough-draft stage <strong>stops accumulating deals</strong>.',
+        '<strong>Close rate on quoted work rises</strong> while <strong>quote volume falls</strong>.',
+        'Both numbers come straight off the <strong>Copper export</strong>. <strong>No new reporting to build.</strong>'
       ]},
       {h:'Training next — sales team', ul:[
         {lead:'Getting Deals Across the Finish Line', ul:[
-          'Run against live open deals, not generic scenarios.'
+          'Run against <strong>live open deals</strong>, not generic scenarios.'
         ]},
         {lead:'Avoiding Think It Overs', ul:[
-          'Built specifically around the "we will reach out" response.'
+          'Built specifically around the <strong>"we will reach out"</strong> response.'
         ]}
       ]},
       {h:'Training next — sales leadership', ul:[
         {lead:'Coaching Clinic', ul:[
-          'Turning the tools already in place into inspection and follow-through.'
+          'Turning the tools <strong>already in place</strong> into <strong>inspection and follow-through</strong>.'
         ]}
       ]}
     ]
   },
   {
     id:'commitments', title:'Who Owns What', grad:'g5', icon:'hands',
-    split:[
+    own:[
       {h:'Bulwark owns', ul:[
-        'Put a date on the two open roster decisions.',
-        'Define the revenue trigger that releases the added sales hire.',
-        'Send three recorded closing conversations before the next session.',
-        'Attach a consequence to missed weekly activity.',
-        'Pick the one company revenue number the sales plan builds from.'
+        'Put a <strong>date</strong> on the two open roster decisions.',
+        'Define the <strong>revenue trigger</strong> that releases the added sales hire.',
+        'Send <strong>three recorded closing conversations</strong> before the next session.',
+        'Attach a <strong>consequence</strong> to missed weekly activity.',
+        'Pick the <strong>one company revenue number</strong> the sales plan builds from.'
       ]},
       {h:'Lushin owns', ul:[
-        'Run both closing sessions against live open deals.',
-        'Review the three recordings and come back with specific coaching, not general feedback.',
-        'Build the repeat-order and new-account measures off the Copper export.',
-        'Open every session with your agenda before ours.'
+        'Run both closing sessions against <strong>live open deals</strong>.',
+        'Review the three recordings and come back with <strong>specific coaching</strong>, not general feedback.',
+        'Build the <strong>repeat-order and new-account measures</strong> off the Copper export.',
+        'Open every session with <strong>your agenda</strong> before ours.'
       ]}
     ]
   }
@@ -295,7 +288,6 @@ const ICONS = {
 const nav = document.getElementById('nav');
 const main = document.getElementById('main');
 
-/* build side nav — Home first */
 const links = [{id:'home',title:'Home'}].concat(SECTIONS.map(s=>({id:s.id,title:s.title})));
 links.forEach(l=>{
   const a = document.createElement('a');
@@ -305,15 +297,12 @@ links.forEach(l=>{
   nav.appendChild(a);
 });
 
-function svg(key){
-  return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[key] + '</svg>';
-}
+function svg(k){ return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[k] + '</svg>'; }
 
 function renderList(items){
   return '<ul>' + items.map(it=>{
     if (typeof it === 'string') return '<li>' + it + '</li>';
-    return '<li><span class="lead">' + it.lead + '</span>' +
-           (it.ul ? renderList(it.ul) : '') + '</li>';
+    return '<li><span class="lead">' + it.lead + '</span>' + (it.ul ? renderList(it.ul) : '') + '</li>';
   }).join('') + '</ul>';
 }
 
@@ -324,30 +313,25 @@ function renderHome(){
       '<a class="tile ' + s.grad + '" href="#' + s.id + '">' +
         '<div class="ico">' + svg(s.icon) + '</div>' +
         '<div><p class="ctx">Bulwark</p><p class="ttl">' + s.title + '</p></div>' +
-      '</a>').join('') +
-    '</div>';
+      '</a>').join('') + '</div>';
 }
 
 function renderSection(s){
-  let html = '<div class="shead ' + s.grad + '">' +
-    '<p class="ctx">Bulwark</p><h2>' + s.title + '</h2></div>';
-
+  let html = '<div class="shead ' + s.grad + '"><p class="ctx">Bulwark</p><h2>' + s.title + '</h2></div>';
   if (s.status){
-    html += '<div class="status">' + s.status.map(c=>
+    html += '<div class="stack">' + s.status.map(c=>
       '<div class="card"><div class="top"><p class="nm">' + c.nm + '</p>' +
-      '<span class="mk ' + c.cls + '">' + c.mk + '</span></div>' +
-      '<ul>' + c.ul.map(x=>'<li>' + x + '</li>').join('') + '</ul></div>').join('') +
-    '</div>';
+      '<span class="mk ' + c.cls + '">' + c.mk + '</span></div><ul>' +
+      c.ul.map(x=>'<li>' + x + '</li>').join('') + '</ul></div>').join('') + '</div>';
   }
   if (s.blocks){
     html += s.blocks.map(b=>'<div class="block">' +
       (b.h ? '<h3>' + b.h + '</h3>' : '') + renderList(b.ul) + '</div>').join('');
   }
-  if (s.split){
-    html += '<div class="split">' + s.split.map(o=>
-      '<div class="own"><h3>' + o.h + '</h3>' +
-      '<ul>' + o.ul.map(x=>'<li>' + x + '</li>').join('') + '</ul></div>').join('') +
-    '</div>';
+  if (s.own){
+    html += '<div class="stack">' + s.own.map(o=>
+      '<div class="own"><h3>' + o.h + '</h3><ul>' +
+      o.ul.map(x=>'<li>' + x + '</li>').join('') + '</ul></div>').join('') + '</div>';
   }
   return html;
 }
@@ -356,8 +340,7 @@ function route(){
   const id = (location.hash || '#home').slice(1);
   const s = SECTIONS.find(x=>x.id === id);
   main.innerHTML = s ? renderSection(s) : renderHome();
-  nav.querySelectorAll('a').forEach(a=>
-    a.classList.toggle('on', a.dataset.id === (s ? id : 'home')));
+  nav.querySelectorAll('a').forEach(a=>a.classList.toggle('on', a.dataset.id === (s ? id : 'home')));
   window.scrollTo(0,0);
 }
 
