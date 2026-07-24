@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bulwark — Sales Progress Review</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600&display=swap" rel="stylesheet">
+<script>
+/* set theme + nav state before first paint so there is no flash */
+(function(){
+  var t='light', n='open';
+  try{
+    t = localStorage.getItem('bw-theme') || 'light';
+    n = localStorage.getItem('bw-nav')   || 'open';
+  }catch(e){}
+  document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-nav', n === 'closed' ? 'closed' : 'open');
+})();
+</script>
 <style>
+/* ---------- brand constants ---------- */
 :root{
   --stable:#21245C;
   --fresh:#00ADED;
@@ -13,50 +26,95 @@
   --passionate:#E34554;
   --fireball:#F05A28;
   --limitless:#FAB040;
-  --gray:#EDEDED;
-  --white:#FFFFFF;
-  --body:#333333;
-  --subtle:#666666;
   --font:'Poppins',Arial,sans-serif;
-  --nav:260px;
+  --nav-w:260px;
   --col:880px;
 }
+/* ---------- light (default) ---------- */
+:root,[data-theme="light"]{
+  --bg:#FFFFFF;
+  --nav-bg:#21245C;
+  --surface:#EDEDED;
+  --text:#333333;
+  --heading:#21245C;
+  --emph:#21245C;
+  --muted:#666666;
+  --hover:rgba(33,36,92,.05);
+}
+/* ---------- dark ---------- */
+[data-theme="dark"]{
+  --bg:#15173C;
+  --nav-bg:#0B0D22;
+  --surface:#232659;
+  --text:rgba(255,255,255,.84);
+  --heading:#FFFFFF;
+  --emph:#00ADED;
+  --muted:rgba(255,255,255,.6);
+  --hover:rgba(255,255,255,.07);
+}
+
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
-  margin:0;font-family:var(--font);font-weight:400;color:var(--body);
-  background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;
+  margin:0;font-family:var(--font);font-weight:400;color:var(--text);
+  background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;
 }
 a{color:inherit;}
 :focus-visible{outline:3px solid var(--fresh);outline-offset:3px;}
-strong{font-weight:600;color:var(--stable);}
+strong{font-weight:600;color:var(--emph);}
 
 /* ---------- side nav ---------- */
 .nav{
-  position:fixed;top:0;left:0;width:var(--nav);height:100vh;
-  background:var(--stable);padding:38px 0;overflow-y:auto;z-index:20;
+  position:fixed;top:0;left:0;width:var(--nav-w);height:100vh;
+  background:var(--nav-bg);padding:20px 0 18px;z-index:20;
+  display:flex;flex-direction:column;overflow-y:auto;
+  transition:width .2s ease;
 }
-.brand{padding:0 30px 30px;}
-.brand .mark{font-weight:600;font-size:19px;color:var(--white);letter-spacing:-.01em;margin:0;}
+.navbtn{
+  display:flex;align-items:center;gap:12px;width:100%;
+  padding:14px 26px;margin:0;background:none;border:0;cursor:pointer;
+  font-family:var(--font);font-size:13px;font-weight:400;
+  color:rgba(255,255,255,.7);text-align:left;
+}
+.navbtn:hover{color:#FFFFFF;background:rgba(255,255,255,.07);}
+.navbtn svg{width:20px;height:20px;flex-shrink:0;stroke:currentColor;fill:none;
+  stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+.brand{padding:10px 26px 24px;}
+.brand .mark{font-weight:600;font-size:19px;color:#FFFFFF;letter-spacing:-.01em;margin:0;white-space:nowrap;}
 .brand .mark span{color:var(--fresh);}
+.links{flex:1;}
 .nav a{
-  display:block;padding:14px 30px;text-decoration:none;color:rgba(255,255,255,.72);
-  font-weight:400;font-size:14px;border-left:4px solid transparent;
+  display:flex;align-items:center;gap:14px;
+  padding:13px 26px;text-decoration:none;color:rgba(255,255,255,.72);
+  font-weight:400;font-size:14px;border-left:4px solid transparent;white-space:nowrap;
 }
-.nav a:hover{color:var(--white);background:rgba(255,255,255,.06);}
-.nav a.on{color:var(--white);font-weight:500;border-left-color:var(--fresh);background:rgba(255,255,255,.08);}
+.nav a svg{width:19px;height:19px;flex-shrink:0;stroke:currentColor;fill:none;
+  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.nav a:hover{color:#FFFFFF;background:rgba(255,255,255,.06);}
+.nav a.on{color:#FFFFFF;font-weight:500;border-left-color:var(--fresh);background:rgba(255,255,255,.09);}
+
+/* ---------- collapsed nav (desktop only) ---------- */
+@media (min-width:861px){
+  [data-nav="closed"]{--nav-w:76px;}
+  [data-nav="closed"] .brand,
+  [data-nav="closed"] .lb,
+  [data-nav="closed"] .tlabel{display:none;}
+  [data-nav="closed"] .navbtn{justify-content:center;padding:14px 0;}
+  [data-nav="closed"] .nav a{justify-content:center;padding:15px 0;gap:0;}
+  [data-nav="closed"] .links{padding-top:14px;}
+}
 
 /* ---------- main ---------- */
-.main{margin-left:var(--nav);padding:64px 56px 96px;max-width:1180px;}
-.eyebrow{font-weight:400;font-size:14px;color:var(--subtle);margin:0 0 4px;}
-h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0 44px;}
+.main{margin-left:var(--nav-w);padding:64px 56px 96px;max-width:1180px;transition:margin-left .2s ease;}
+.eyebrow{font-weight:400;font-size:14px;color:var(--muted);margin:0 0 4px;}
+h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--heading);margin:0 0 44px;}
 
 /* ---------- hub tiles ---------- */
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .tile{
-  position:relative;display:flex;flex-direction:column;justify-content:space-between;
+  display:flex;flex-direction:column;justify-content:space-between;
   min-height:430px;padding:34px;border-radius:20px;text-decoration:none;
-  color:var(--white);border:0;text-align:left;font-family:var(--font);cursor:pointer;
+  color:#FFFFFF;border:0;text-align:left;font-family:var(--font);cursor:pointer;
   transition:transform .18s ease;
 }
 .tile:hover{transform:translateY(-5px);}
@@ -64,7 +122,7 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
   width:56px;height:56px;border-radius:14px;background:rgba(255,255,255,.2);
   display:flex;align-items:center;justify-content:center;
 }
-.tile .ico svg{width:28px;height:28px;stroke:var(--white);fill:none;stroke-width:1.8;
+.tile .ico svg{width:28px;height:28px;stroke:#FFFFFF;fill:none;stroke-width:1.8;
   stroke-linecap:round;stroke-linejoin:round;}
 .tile .ctx{font-weight:200;font-size:15px;opacity:.85;margin:0 0 6px;}
 .tile .ttl{font-weight:600;font-size:32px;line-height:1.12;margin:0;letter-spacing:-.02em;}
@@ -75,76 +133,79 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
 .g4{background:linear-gradient(140deg,var(--fireball),var(--limitless));box-shadow:0 18px 40px -14px rgba(240,90,40,.45);}
 .g5{background:radial-gradient(circle at 30% 20%,var(--stable),#000000 80%);box-shadow:0 18px 40px -14px rgba(0,0,0,.5);}
 
-/* ---------- section view ---------- */
-.shead{border-radius:20px;padding:40px 44px;color:var(--white);margin:0 0 40px;max-width:var(--col);}
+/* ---------- section header ---------- */
+.shead{border-radius:20px;padding:40px 44px;color:#FFFFFF;margin:0 0 40px;max-width:var(--col);}
 .shead .ctx{font-weight:200;font-size:16px;opacity:.85;margin:0 0 6px;}
 .shead h2{font-weight:600;font-size:36px;line-height:1.1;margin:0;letter-spacing:-.02em;}
 
 .stack{display:flex;flex-direction:column;gap:16px;max-width:var(--col);}
-.block{margin-bottom:36px;max-width:var(--col);}
-.block:last-child{margin-bottom:0;}
-.block h3{font-weight:500;font-size:17px;color:var(--stable);margin:0 0 14px;}
-.block > ul{margin:0;padding-left:22px;}
-.block > ul > li{margin-bottom:14px;font-size:15px;}
-.block > ul > li:last-child{margin-bottom:0;}
-.block ul ul{margin:9px 0 0;padding-left:22px;}
-.block ul ul li{margin-bottom:7px;font-size:14px;}
-.lead{font-weight:500;color:var(--stable);}
 
-/* ---------- collapsible cards ---------- */
+/* ---------- collapsible card (every page) ---------- */
 .fold{
-  background:var(--gray);border-radius:14px;border-left:5px solid var(--stable);
+  background:var(--surface);border-radius:14px;border-left:5px solid var(--stable);
   overflow:hidden;
 }
 .fold > summary{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
   padding:22px 26px;cursor:pointer;list-style:none;
 }
 .fold > summary::-webkit-details-marker{display:none;}
-.fold > summary:hover{background:rgba(33,36,92,.05);}
-.fold .nm{font-weight:600;font-size:18px;color:var(--stable);}
-.fold .right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.fold > summary:hover{background:var(--hover);}
+.fold .nm{font-weight:600;font-size:18px;line-height:1.4;color:var(--heading);}
+.fold.long .nm{font-weight:500;font-size:16px;}
+.fold .right{display:flex;align-items:center;gap:14px;flex-shrink:0;padding-top:3px;}
 .fold .mk{
   font-weight:500;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--white);padding:4px 12px;border-radius:999px;white-space:nowrap;
+  color:#FFFFFF;padding:4px 12px;border-radius:999px;white-space:nowrap;
 }
 .mk-move{background:var(--fresh);}
 .mk-part{background:var(--limitless);}
 .mk-att{background:var(--fireball);}
 .fold .chev{
-  width:20px;height:20px;stroke:var(--stable);fill:none;stroke-width:2;
+  width:20px;height:20px;stroke:var(--heading);fill:none;stroke-width:2;
   stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease;
 }
 .fold[open] .chev{transform:rotate(180deg);}
 .fold .inner{padding:0 26px 24px;}
 .fold .inner ul{margin:0;padding-left:20px;}
-.fold .inner li{font-size:15px;margin-bottom:9px;}
+.fold .inner li{font-size:15px;margin-bottom:10px;}
 .fold .inner li:last-child{margin-bottom:0;}
+.fold .inner ul ul{margin:8px 0 0;padding-left:20px;}
+.fold .inner ul ul li{font-size:14px;margin-bottom:7px;}
+.lead{font-weight:500;color:var(--heading);}
 
 .b-move{border-left-color:var(--fresh);}
 .b-part{border-left-color:var(--limitless);}
 .b-att{border-left-color:var(--fireball);}
-.b-own{border-left-color:var(--fresh);}
+.b-fresh{border-left-color:var(--fresh);}
+.b-passionate{border-left-color:var(--passionate);}
+.b-fireball{border-left-color:var(--fireball);}
+.b-stable{border-left-color:var(--stable);}
+[data-theme="dark"] .b-stable{border-left-color:var(--fresh);}
 
 @media (max-width:1040px){ .tiles{grid-template-columns:repeat(2,1fr);} }
 @media (max-width:860px){
-  :root{--nav:0px;}
-  .nav{position:static;width:100%;height:auto;padding:24px 0 10px;display:block;}
-  .brand{padding:0 22px 14px;}
-  .nav a{display:inline-block;padding:9px 16px;border-left:0;border-bottom:3px solid transparent;font-size:13px;}
+  .nav{position:static;width:100%;height:auto;padding:18px 8px 8px;
+       flex-direction:row;flex-wrap:wrap;align-items:center;transition:none;}
+  .brand{padding:0 14px 10px;width:100%;}
+  .links{flex:0 0 100%;display:flex;flex-wrap:wrap;}
+  .nav a{padding:9px 14px;border-left:0;border-bottom:3px solid transparent;font-size:13px;gap:9px;}
   .nav a.on{border-left:0;border-bottom-color:var(--fresh);background:transparent;}
-  .main{margin-left:0;padding:34px 22px 72px;}
+  #navToggle{display:none;}
+  .navbtn{width:auto;padding:9px 14px;}
+  .main{margin-left:0;padding:34px 22px 72px;transition:none;}
   .tiles{grid-template-columns:1fr;}
   .tile{min-height:300px;padding:28px;}
   .tile .ttl{font-size:28px;}
   .shead{padding:28px 26px;}
   .shead h2{font-size:27px;}
-  .fold > summary{padding:18px 20px;flex-wrap:wrap;}
+  .fold > summary{padding:18px 20px;}
+  .fold .nm,.fold.long .nm{font-size:15px;}
   .fold .inner{padding:0 20px 20px;}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
-  .tile,.fold .chev{transition:none;}
+  .tile,.fold .chev,.nav,.main{transition:none;}
   .tile:hover{transform:none;}
 }
 </style>
@@ -152,7 +213,10 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
 <body>
 
 <nav class="nav" id="nav">
+  <button class="navbtn" id="navToggle" aria-label="Collapse navigation" aria-expanded="true"></button>
   <div class="brand"><p class="mark">Bulwark <span>·</span> Lushin</p></div>
+  <div class="links" id="links"></div>
+  <button class="navbtn" id="themeToggle" aria-label="Switch to dark theme"></button>
 </nav>
 
 <main class="main" id="main"></main>
@@ -160,20 +224,28 @@ h1{font-weight:500;font-size:26px;line-height:1.2;color:var(--stable);margin:0 0
 <script>
 /* =====================================================================
    ADD OR EDIT A SECTION: add one entry to this array. Nothing else changes.
-   id     = hash route (#id)
-   title  = big section name
-   grad   = g1 | g2 | g3 | g4 | g5
-   icon   = key from ICONS below
-   Content keys (use any): status[] | blocks[] | own[]
 
-   Collapsible cards (status[] and own[]) take:
-     open: true   -> starts expanded      (omit to start collapsed)
-   Wrap emphasis in <strong> — renders as Poppins SemiBold, brand navy.
+   Section keys:
+     id    = hash route (#id)
+     title = big section name
+     grad  = g1 | g2 | g3 | g4 | g5      (tile + header gradient)
+     bd    = default card border: b-fresh | b-passionate | b-fireball | b-stable
+     icon  = key from ICONS below
+     cards = the collapsible cards on that page
+
+   Card keys:
+     nm    = the label on the closed card
+     ul    = contents; a string, or {lead:"...", ul:[...]} to nest
+     open  = true to start expanded   (omit to start collapsed)
+     long  = true when nm is a sentence rather than a word
+     mk/cls= optional status pill: cls is move | part | att
+
+   Wrap emphasis in <strong> — Poppins SemiBold, navy on light, cyan on dark.
    ===================================================================== */
 const SECTIONS = [
   {
-    id:'standing', title:'Where We Stand', grad:'g1', icon:'gauge',
-    status:[
+    id:'standing', title:'Where We Stand', grad:'g1', bd:'b-stable', icon:'gauge',
+    cards:[
       {nm:'Strategy', mk:'Moving', cls:'move', ul:[
         'Priorities are clearer than they have been: <strong>strengthen current customers</strong>, <strong>cultivate new accounts</strong>, <strong>sharpen qualifying and closing</strong>.',
         'One thing to settle: the company revenue target has been <strong>stated two different ways</strong>. The sales plan needs <strong>one number</strong> to build from.'
@@ -194,76 +266,72 @@ const SECTIONS = [
     ]
   },
   {
-    id:'progress', title:'What Moved', grad:'g2', icon:'rise',
-    blocks:[
-      {ul:[
-        {lead:'One seller cleared baseline by a wide margin', ul:[
-          '<strong>Nearly double</strong> the monthly baseline, for the <strong>second time this year</strong>.',
-          'On pace to finish <strong>above the annual number</strong>.'
-        ]},
-        {lead:'The pipeline was rebuilt on the five milestone stages', ul:[
-          'Copper restructured <strong>within two weeks</strong> of the in-person session.',
-          'Old stages that were <strong>killing deals</strong> were removed.'
-        ]},
-        {lead:'The whole team worked a full day in person', ul:[
-          'Pipeline audit, prospecting practice, pain discovery, <strong>closing and PO practice</strong>.',
-          'Every rep left with a <strong>named gap</strong> to work on.'
-        ]},
-        {lead:'Quote criteria are in active use', ul:[
-          'Printed checklists are being run <strong>before quotes go out</strong>.'
-        ]},
-        {lead:'Conversations can now be reviewed instead of recalled', ul:[
-          'Meeting capture is in place for <strong>both virtual and in-person</strong> calls.',
-          'This is what makes <strong>real coaching</strong> possible.'
-        ]},
-        {lead:'Coaching expanded past the sales manager', ul:[
-          'Direct sessions now open with the <strong>general manager</strong> and with <strong>reps individually</strong>.'
-        ]}
+    id:'progress', title:'What Moved', grad:'g2', bd:'b-fresh', icon:'rise',
+    cards:[
+      {nm:'One seller cleared baseline by a wide margin', long:true, ul:[
+        '<strong>Nearly double</strong> the monthly baseline, for the <strong>second time this year</strong>.',
+        'On pace to finish <strong>above the annual number</strong>.'
+      ]},
+      {nm:'The pipeline was rebuilt on the five milestone stages', long:true, ul:[
+        'Copper restructured <strong>within two weeks</strong> of the in-person session.',
+        'Old stages that were <strong>killing deals</strong> were removed.'
+      ]},
+      {nm:'The whole team worked a full day in person', long:true, ul:[
+        'Pipeline audit, prospecting practice, pain discovery, <strong>closing and PO practice</strong>.',
+        'Every rep left with a <strong>named gap</strong> to work on.'
+      ]},
+      {nm:'Quote criteria are in active use', long:true, ul:[
+        'Printed checklists are being run <strong>before quotes go out</strong>.'
+      ]},
+      {nm:'Conversations can now be reviewed instead of recalled', long:true, ul:[
+        'Meeting capture is in place for <strong>both virtual and in-person</strong> calls.',
+        'This is what makes <strong>real coaching</strong> possible.'
+      ]},
+      {nm:'Coaching expanded past the sales manager', long:true, ul:[
+        'Direct sessions now open with the <strong>general manager</strong> and with <strong>reps individually</strong>.'
       ]}
     ]
   },
   {
-    id:'blocking', title:"What's Blocking", grad:'g3', icon:'block',
-    blocks:[
-      {ul:[
-        {lead:'Deals stop after the rough draft goes out', ul:[
-          'Most have <strong>no scheduled next step</strong> attached.',
-          'Momentum depends on <strong>the customer coming back on their own</strong>.'
-        ]},
-        {lead:'"We will reach out when we are ready" is being accepted as progress', ul:[
-          'It is <strong>not a commitment</strong>, and it is <strong>where most of the pipeline is sitting</strong>.',
-          'This is the <strong>single biggest constraint on revenue</strong> right now.'
-        ]},
-        {lead:'Committed weekly activity has been missed three checks in a row', ul:[
-          'The tracking works. <strong>The follow-through does not.</strong>',
-          '<strong>Nothing changes</strong> when a commitment is missed.'
-        ]},
-        {lead:'Live prospecting has been replaced by email and messaging', ul:[
-          'Those channels are easier, and they are <strong>not producing meetings</strong>.',
-          '<strong>Calls and walk-ins are close to zero</strong> for part of the team.'
-        ]},
-        {lead:'Two roster decisions have been open for months', ul:[
-          'Both are holding up <strong>territory planning</strong> and <strong>the added hire</strong>.'
-        ]},
-        {lead:'Two of the three stated priorities have no scoreboard', ul:[
-          '<strong>Repeat orders</strong> and <strong>new-account growth</strong> are not currently measured.'
-        ]}
+    id:'blocking', title:"What's Blocking", grad:'g3', bd:'b-passionate', icon:'block',
+    cards:[
+      {nm:'Deals stop after the rough draft goes out', long:true, ul:[
+        'Most have <strong>no scheduled next step</strong> attached.',
+        'Momentum depends on <strong>the customer coming back on their own</strong>.'
+      ]},
+      {nm:'"We will reach out when we are ready" is being accepted as progress', long:true, ul:[
+        'It is <strong>not a commitment</strong>, and it is <strong>where most of the pipeline is sitting</strong>.',
+        'This is the <strong>single biggest constraint on revenue</strong> right now.'
+      ]},
+      {nm:'Committed weekly activity has been missed three checks in a row', long:true, ul:[
+        'The tracking works. <strong>The follow-through does not.</strong>',
+        '<strong>Nothing changes</strong> when a commitment is missed.'
+      ]},
+      {nm:'Live prospecting has been replaced by email and messaging', long:true, ul:[
+        'Those channels are easier, and they are <strong>not producing meetings</strong>.',
+        '<strong>Calls and walk-ins are close to zero</strong> for part of the team.'
+      ]},
+      {nm:'Two roster decisions have been open for months', long:true, ul:[
+        'Both are holding up <strong>territory planning</strong> and <strong>the added hire</strong>.'
+      ]},
+      {nm:'Two of the three stated priorities have no scoreboard', long:true, ul:[
+        '<strong>Repeat orders</strong> and <strong>new-account growth</strong> are not currently measured.'
       ]}
     ]
   },
   {
-    id:'plan', title:'The Plan', grad:'g4', icon:'target',
-    blocks:[
-      {h:'The goal, narrowed to one thing', ul:[
+    id:'plan', title:'The Plan', grad:'g4', bd:'b-fireball', icon:'target',
+    cards:[
+      {nm:'The goal, narrowed to one thing', long:true, open:true, ul:[
         'Every open deal past rough draft has a <strong>scheduled next meeting</strong>, with a <strong>named decision maker</strong>, on the calendar.',
         '<strong>Three live closing conversations</strong> reviewed every month from recordings.'
       ]},
-      {h:'How we will know it is working', ul:[
+      {nm:'How we will know it is working', long:true, ul:[
         'The rough-draft stage <strong>stops accumulating deals</strong>.',
         '<strong>Close rate on quoted work rises</strong> while <strong>quote volume falls</strong>.',
         'Both numbers come straight off the <strong>Copper export</strong>. <strong>No new reporting to build.</strong>'
       ]},
-      {h:'Training next — sales team', ul:[
+      {nm:'Training next — sales team', long:true, ul:[
         {lead:'Getting Deals Across the Finish Line', ul:[
           'Run against <strong>live open deals</strong>, not generic scenarios.'
         ]},
@@ -271,7 +339,7 @@ const SECTIONS = [
           'Built specifically around the <strong>"we will reach out"</strong> response.'
         ]}
       ]},
-      {h:'Training next — sales leadership', ul:[
+      {nm:'Training next — sales leadership', long:true, ul:[
         {lead:'Coaching Clinic', ul:[
           'Turning the tools <strong>already in place</strong> into <strong>inspection and follow-through</strong>.'
         ]}
@@ -279,8 +347,8 @@ const SECTIONS = [
     ]
   },
   {
-    id:'commitments', title:'Who Owns What', grad:'g5', icon:'hands',
-    own:[
+    id:'commitments', title:'Who Owns What', grad:'g5', bd:'b-stable', icon:'hands',
+    cards:[
       {nm:'Bulwark owns', open:true, ul:[
         'Put a <strong>date</strong> on the two open roster decisions.',
         'Define the <strong>revenue trigger</strong> that releases the added sales hire.',
@@ -299,29 +367,67 @@ const SECTIONS = [
 ];
 
 const ICONS = {
+  home:'<path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
   gauge:'<path d="M12 21a9 9 0 1 1 9-9"/><path d="M12 12l4.5-4.5"/><circle cx="12" cy="12" r="1.4"/>',
   rise:'<path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v5h-5"/>',
   block:'<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
   target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
-  hands:'<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 12V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12V6.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6v-2a1.5 1.5 0 0 1 3 0"/>'
+  hands:'<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 12V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12V6.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6v-2a1.5 1.5 0 0 1 3 0"/>',
+  panel:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9.5 4v16"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/>',
+  moon:'<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>'
 };
 
 const CHEV = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
 
-const nav = document.getElementById('nav');
-const main = document.getElementById('main');
+const root  = document.documentElement;
+const links = document.getElementById('links');
+const main  = document.getElementById('main');
+const navBtn   = document.getElementById('navToggle');
+const themeBtn = document.getElementById('themeToggle');
 
-const links = [{id:'home',title:'Home'}].concat(SECTIONS.map(s=>({id:s.id,title:s.title})));
-links.forEach(l=>{
-  const a = document.createElement('a');
-  a.href = '#' + l.id;
-  a.textContent = l.title;
-  a.dataset.id = l.id;
-  nav.appendChild(a);
+function svg(k, cls){
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"' + (cls ? ' class="' + cls + '"' : '') + '>' + ICONS[k] + '</svg>';
+}
+function save(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+
+/* ---------- nav links: Home first ---------- */
+const NAVITEMS = [{id:'home', title:'Home', icon:'home'}]
+  .concat(SECTIONS.map(s=>({id:s.id, title:s.title, icon:s.icon})));
+
+links.innerHTML = NAVITEMS.map(l=>
+  '<a href="#' + l.id + '" data-id="' + l.id + '" title="' + l.title + '">' +
+    svg(l.icon) + '<span class="lb">' + l.title + '</span></a>').join('');
+
+/* ---------- nav collapse ---------- */
+function paintNav(){
+  const closed = root.getAttribute('data-nav') === 'closed';
+  navBtn.innerHTML = svg('panel') + '<span class="lb">' + (closed ? 'Expand' : 'Collapse') + '</span>';
+  navBtn.setAttribute('aria-expanded', String(!closed));
+  navBtn.setAttribute('aria-label', closed ? 'Expand navigation' : 'Collapse navigation');
+}
+navBtn.addEventListener('click', ()=>{
+  const closed = root.getAttribute('data-nav') === 'closed';
+  root.setAttribute('data-nav', closed ? 'open' : 'closed');
+  save('bw-nav', closed ? 'open' : 'closed');
+  paintNav();
 });
 
-function svg(k){ return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[k] + '</svg>'; }
+/* ---------- theme ---------- */
+function paintTheme(){
+  const dark = root.getAttribute('data-theme') === 'dark';
+  themeBtn.innerHTML = svg(dark ? 'sun' : 'moon') +
+    '<span class="tlabel">' + (dark ? 'Light' : 'Dark') + '</span>';
+  themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+}
+themeBtn.addEventListener('click', ()=>{
+  const dark = root.getAttribute('data-theme') === 'dark';
+  root.setAttribute('data-theme', dark ? 'light' : 'dark');
+  save('bw-theme', dark ? 'light' : 'dark');
+  paintTheme();
+});
 
+/* ---------- content ---------- */
 function renderList(items){
   return '<ul>' + items.map(it=>{
     if (typeof it === 'string') return '<li>' + it + '</li>';
@@ -329,13 +435,14 @@ function renderList(items){
   }).join('') + '</ul>';
 }
 
-/* one collapsible card */
-function fold(c, borderClass){
-  const pill = c.mk ? '<span class="mk mk-' + c.cls + '">' + c.mk + '</span>' : '';
-  return '<details class="fold ' + borderClass + '"' + (c.open ? ' open' : '') + '>' +
+function fold(c, sectionBorder){
+  const border = c.cls ? 'b-' + c.cls : sectionBorder;
+  const pill   = c.mk ? '<span class="mk mk-' + c.cls + '">' + c.mk + '</span>' : '';
+  return '<details class="fold ' + border + (c.long ? ' long' : '') + '"' +
+    (c.open ? ' open' : '') + '>' +
     '<summary><span class="nm">' + c.nm + '</span>' +
     '<span class="right">' + pill + CHEV + '</span></summary>' +
-    '<div class="inner"><ul>' + c.ul.map(x=>'<li>' + x + '</li>').join('') + '</ul></div>' +
+    '<div class="inner">' + renderList(c.ul) + '</div>' +
   '</details>';
 }
 
@@ -350,29 +457,21 @@ function renderHome(){
 }
 
 function renderSection(s){
-  let html = '<div class="shead ' + s.grad + '"><p class="ctx">Bulwark</p><h2>' + s.title + '</h2></div>';
-  if (s.status){
-    html += '<div class="stack">' + s.status.map(c=>fold(c,'b-' + c.cls)).join('') + '</div>';
-  }
-  if (s.blocks){
-    html += s.blocks.map(b=>'<div class="block">' +
-      (b.h ? '<h3>' + b.h + '</h3>' : '') + renderList(b.ul) + '</div>').join('');
-  }
-  if (s.own){
-    html += '<div class="stack">' + s.own.map(c=>fold(c,'b-own')).join('') + '</div>';
-  }
-  return html;
+  return '<div class="shead ' + s.grad + '"><p class="ctx">Bulwark</p><h2>' + s.title + '</h2></div>' +
+    '<div class="stack">' + s.cards.map(c=>fold(c, s.bd)).join('') + '</div>';
 }
 
 function route(){
   const id = (location.hash || '#home').slice(1);
   const s = SECTIONS.find(x=>x.id === id);
   main.innerHTML = s ? renderSection(s) : renderHome();
-  nav.querySelectorAll('a').forEach(a=>a.classList.toggle('on', a.dataset.id === (s ? id : 'home')));
+  links.querySelectorAll('a').forEach(a=>a.classList.toggle('on', a.dataset.id === (s ? id : 'home')));
   window.scrollTo(0,0);
 }
 
 window.addEventListener('hashchange', route);
+paintNav();
+paintTheme();
 route();
 </script>
 </body>
